@@ -1,5 +1,62 @@
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+
 export default function Auth() {
-    return(
-        <div>Auth Page</div>
-    )
+  const [mode, setMode] = useState("signup");
+  const { register, handleSubmit, formState = { errors } } = useForm();
+  return (
+    <div className="page">
+      <div className="container">
+        <div className="auth-container">
+          <h1 className="page-title">
+            {mode === "signup" ? "Sing Up" : "Login"}
+          </h1>
+          <form className="auth-form">
+            <div className="form-group">
+              <label className="form-label" htmlFor="email">
+                Email
+              </label>
+              <input
+                className="form-input"
+                type="email"
+                id="email"
+                {...register("email", { required: "Email is required" })}
+              />
+            </div>
+            <div className="form-group">
+              <label className="form-label" htmlFor="passwords">
+                Password
+              </label>
+              <input
+                className="form-input"
+                type="passwords"
+                id="passwords"
+                {...register("password", { required: "Password is required" })}
+              />
+            </div>
+            <button type="submit" className="btn btn-primary btn-large">
+              {mode === "signup" ? "Sing Up" : "Login"}
+            </button>
+          </form>
+          <div className="auth-switch">
+            {mode === "signup" ? (
+              <p>
+                Already have an account ?{""}{" "}
+                <span className="auth-link" onClick={() => setMode(Login)}>
+                  Login
+                </span>
+              </p>
+            ) : (
+              <p>
+                Already have an account ?{""}{" "}
+                <span className="auth-link" onClick={() => setMode(signup)}>
+                  Sign Up
+                </span>
+              </p>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 }
