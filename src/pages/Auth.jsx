@@ -5,7 +5,11 @@ import { AuthContext } from "../context/AuthContext";
 export default function Auth() {
   const [mode, setMode] = useState("signup");
   const { signUp, user, logout, login } = useContext(AuthContext);
-  const { register, handleSubmit, formState = { errors } } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
   function onSubmit(data) {
     let result;
     if (mode === "signup") {
@@ -24,7 +28,7 @@ export default function Auth() {
           <h1 className="page-title">
             {mode === "signup" ? "Sing Up" : "Login"}
           </h1>
-          <form className="auth-form">
+          <form className="auth-form" onSubmit={handleSubmit(onSubmit)}>
             <div className="form-group">
               <label className="form-label" htmlFor="email">
                 Email
@@ -35,6 +39,9 @@ export default function Auth() {
                 id="email"
                 {...register("email", { required: "Email is required" })}
               />
+              {errors.email && (
+                <span className="form-error">{errors.email.message}</span>
+              )}
             </div>
             <div className="form-group">
               <label className="form-label" htmlFor="passwords">
@@ -56,6 +63,9 @@ export default function Auth() {
                   },
                 })}
               />
+              {errors.password && (
+                <span className="form-error">{errors.password.message}</span>
+              )}
             </div>
             <button type="submit" className="btn btn-primary btn-large">
               {mode === "signup" ? "Sing Up" : "Login"}
@@ -65,14 +75,14 @@ export default function Auth() {
             {mode === "signup" ? (
               <p>
                 Already have an account ?{""}{" "}
-                <span className="auth-link" onClick={() => setMode(Login)}>
+                <span className="auth-link" onClick={() => setMode("login")}>
                   Login
                 </span>
               </p>
             ) : (
               <p>
                 Already have an account ?{""}{" "}
-                <span className="auth-link" onClick={() => setMode(signup)}>
+                <span className="auth-link" onClick={() => setMode("signup")}>
                   Sign Up
                 </span>
               </p>
