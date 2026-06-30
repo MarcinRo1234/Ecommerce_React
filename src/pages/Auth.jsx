@@ -1,14 +1,21 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useForm } from "react-hook-form";
 import { AuthContext } from "../context/AuthContext";
 
 export default function Auth() {
   const [mode, setMode] = useState("signup");
-  const { signup, user } = useContext(AuthContext);
+  const { signUp, user, logout, login } = useContext(AuthContext);
   const { register, handleSubmit, formState = { errors } } = useForm();
   function onSubmit(data) {
-    signup(data.email, data.password);
+    let result;
+    if (mode === "signup") {
+      result = signUp(data.email, data.password);
+    } else {
+      result = login(data.email, data.password);
+    }
+    console.log(result);
   }
+
   return (
     <div className="page">
       <div className="container">
