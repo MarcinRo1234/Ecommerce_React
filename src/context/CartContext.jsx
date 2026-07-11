@@ -1,4 +1,5 @@
 import { createContext, useState, useContext } from "react";
+import { getProductById } from "../data/products";
 
 const CartContext = createContext(null);
 
@@ -19,9 +20,16 @@ export default function CartProvider({ children }) {
       setCartItems([...cartItems, { id: productId, quantity: 1 }]);
     }
   }
+  function getCartItemsWithProducts() {
+    return cartItems
+      .map((item) => ({ ...item, product: getProductById(item.id) }))
+      .filter((item) => item.product);
+  }
 
   return (
-    <CartContext.Provider value={{ cartItems, addToCart }}>
+    <CartContext.Provider
+      value={{ cartItems, addToCart, getCartItemsWithProducts }}
+    >
       {children}
     </CartContext.Provider>
   );
